@@ -57,7 +57,7 @@ const AddUserForm = (props) => {
         >
             <label>Name</label>
             <input
-                autocomplete="Off"
+                autoComplete="Off"
                 type="text"
                 name="name"
                 value={user.name}
@@ -65,7 +65,7 @@ const AddUserForm = (props) => {
             />
             <label>Username</label>
             <input
-                autocomplete="Off"
+                autoComplete="Off"
                 type="text"
                 name="username"
                 value={user.username}
@@ -186,5 +186,96 @@ function App() {
         </div>
     );
 }
+
+export default App;
+
+import React, { useState, useEffect } from "react";
+import "./App.css";
+
+function App() {
+    const [user, setUser] = useState([{ name: "a", age: 18, id: 0 }]);
+    const addUser = () => {
+        let newU = { name: "b", age: 20, id: user.length + 1 };
+        setUser([...user, newU]);
+    };
+    const delUser = (id) => {
+        setUser(user.filter((u) => u.id !== id));
+    };
+    useEffect(() => {
+        // console.log(user);
+    }, [user]);
+    return (
+        <div className="App">
+            <h1>Simplest create/delect</h1>
+            <button onClick={addUser}>add</button>
+            {user.map((r) => (
+                <div key={r.id}>
+                    <p>{r.name}</p>
+                    <button
+                        onClick={() => {
+                            delUser(r.id);
+                        }}
+                    >
+                        del
+                    </button>
+                </div>
+            ))}
+            <Basic />
+        </div>
+    );
+}
+
+const Basic = () => {
+    const initU = { name: "0", id: 0, age: null };
+    const [newUser, setNewUser] = useState({ name: "", id: 0, age: null });
+    const [currentU, setCurrentU] = useState([initU]);
+    const handleChangeUser = (e) => {
+        const { value } = e.target;
+        let newU = { name: value, age: 20, id: currentU.length + 1 };
+        setNewUser(newU);
+    };
+    const addU = (newU) => {
+        setCurrentU([...currentU, newU]);
+    };
+    useEffect(() => {
+        console.log(currentU);
+        console.log(newUser);
+    }, [currentU, newUser]);
+    const delectU = (id) => {
+        setCurrentU(currentU.filter((u) => u.id !== id));
+    };
+    return (
+        <div>
+            <h1>Basic create/delect</h1>
+            <input value={newUser.name} onChange={handleChangeUser} />
+            <button
+                onClick={() => {
+                    addU(newUser);
+                }}
+            >
+                addd
+            </button>
+            {currentU.map((r) => (
+                <div key={r.id}>
+                    {r.name}
+                    <button
+                        onClick={() => {
+                            delectU(r.id);
+                        }}
+                    >
+                        edit
+                    </button>
+                    <button
+                        onClick={() => {
+                            delectU(r.id);
+                        }}
+                    >
+                        del
+                    </button>
+                </div>
+            ))}
+        </div>
+    );
+};
 
 export default App;
