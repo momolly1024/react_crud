@@ -7,7 +7,7 @@ function Heading() {
             <Container>
                 <Nav>
                     <NavItem>
-                        <NavbarBrand href="/">My Team</NavbarBrand>
+                        <NavbarBrand href="/">Molly</NavbarBrand>
                         <Link className="btn btn-primary" to="/add">
                             Add User
                         </Link>

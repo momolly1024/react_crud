@@ -1,33 +1,38 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ListGroup, ListGroupItem, Button } from "reactstrap";
-
+import { GlobalContext } from "../context/GlobalState";
 function UserList() {
+    const { users, removeUser } = useContext(GlobalContext);
+
     return (
         <ListGroup className="mt-4">
-            <ListGroupItem className="d-flex">
-                <strong>User One</strong>
-                <div style={{ marginLeft: "auto" }}>
-                    <Link className="btn btn-warning" to="/edit/1">
-                        Edit
-                    </Link>
-                    <Button color="danger" style={{ marginLeft: "10px" }}>
-                        Delect
-                    </Button>
-                </div>
-            </ListGroupItem>
-
-            <ListGroupItem className="d-flex">
-                <strong>User two</strong>
-                <div style={{ marginLeft: "auto" }}>
-                    <Link className="btn btn-warning" to="/edit/1">
-                        Edit
-                    </Link>
-                    <Button color="danger" style={{ marginLeft: "10px" }}>
-                        Delect
-                    </Button>
-                </div>
-            </ListGroupItem>
+            {users.length > 0 ? (
+                <>
+                    {users.map((user) => (
+                        <ListGroupItem className="d-flex" key={user.id}>
+                            <strong>{user.name}</strong>
+                            <div style={{ marginLeft: "auto" }}>
+                                <Link
+                                    className="btn btn-warning"
+                                    to={`/edit/${user.id}`}
+                                >
+                                    Edit
+                                </Link>
+                                <Button
+                                    color="danger"
+                                    style={{ marginLeft: "10px" }}
+                                    onClick={() => removeUser(user.id)}
+                                >
+                                    Delect
+                                </Button>
+                            </div>
+                        </ListGroupItem>
+                    ))}
+                </>
+            ) : (
+                <h4>No user</h4>
+            )}
         </ListGroup>
     );
 }
