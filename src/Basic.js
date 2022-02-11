@@ -206,8 +206,8 @@ function App() {
     }, [user]);
     return (
         <div className="App">
-            <h1>Simplest create/delect</h1>
-            <button onClick={addUser}>add</button>
+            {/* <h1>Simplest create/delect</h1> */}
+            {/* <button onClick={addUser}>add</button>
             {user.map((r) => (
                 <div key={r.id}>
                     <p>{r.name}</p>
@@ -219,12 +219,16 @@ function App() {
                         del
                     </button>
                 </div>
-            ))}
+            ))} */}
             <Basic />
         </div>
     );
 }
-
+// const changePat = (field) => (e) => {
+//     let val = _.cloneDeep(patInfor);
+//     val = { ...val, [field]: e.target.value };
+//     setPatInfor(val);
+// }
 const Basic = () => {
     const initU = { name: "0", id: 0, age: null };
     const [newUser, setNewUser] = useState({ name: "", id: 0, age: null });
@@ -239,28 +243,69 @@ const Basic = () => {
     };
     useEffect(() => {
         console.log(currentU);
-        console.log(newUser);
+        // console.log(newUser);
     }, [currentU, newUser]);
     const delectU = (id) => {
         setCurrentU(currentU.filter((u) => u.id !== id));
     };
+
+    const [isEdit, setIsEdit] = useState(false);
+    const editU = (id) => {
+        setIsEdit(true);
+        setSelectedU(currentU.find((user) => user.id === id));
+        console.log(id);
+    };
+    const [selectedU, setSelectedU] = useState({});
+    const updateU = () => {
+        let changeU = currentU.map((c) => {
+            if (c.id === selectedU.id) {
+                return selectedU;
+            } else {
+                return c;
+            }
+        });
+        console.log(changeU);
+        setCurrentU(changeU);
+        setIsEdit(false);
+    };
+    const onChange = (e) => {
+        setSelectedU({ ...selectedU, [e.target.name]: e.target.value });
+    };
     return (
         <div>
             <h1>Basic create/delect</h1>
-            <input value={newUser.name} onChange={handleChangeUser} />
-            <button
-                onClick={() => {
-                    addU(newUser);
-                }}
-            >
-                addd
-            </button>
+
+            {isEdit ? (
+                <>
+                    <input
+                        type="text"
+                        name="name"
+                        value={selectedU.name}
+                        onChange={onChange}
+                        placeholder="Enter name"
+                    />
+                    <button onClick={updateU}>OK</button>
+                </>
+            ) : (
+                <>
+                    <input value={newUser.name} onChange={handleChangeUser} />
+                    <button
+                        onClick={() => {
+                            addU(newUser);
+                        }}
+                    >
+                        add
+                    </button>
+                </>
+            )}
+            <br />
+            <br />
             {currentU.map((r) => (
                 <div key={r.id}>
                     {r.name}
                     <button
                         onClick={() => {
-                            delectU(r.id);
+                            editU(r.id);
                         }}
                     >
                         edit
